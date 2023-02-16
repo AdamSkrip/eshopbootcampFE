@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, pathMatch: 'full'},
   {path: 'product', loadChildren: () => import('./product/product.module').then(m => m.ProductModule)},
   {path: 'basket', loadChildren: () => import('./basket/basket.module').then(m => m.BasketModule)},
+  {path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
   {path: '**', component: PageNotFoundComponent}
 ];
 
