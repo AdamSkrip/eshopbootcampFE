@@ -1,17 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductApiService} from "../../product/product-api.service";
 import {forkJoin, map, of, switchMap} from "rxjs";
 import {ProductModel} from "../../product/models/ProductModel";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserService} from "../../../core/services/user.service";
 
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.scss']
 })
-export class AdminHomeComponent implements OnInit {
+export class AdminHomeComponent implements OnInit,OnDestroy {
 
-  constructor(private productApiService: ProductApiService, private router: Router, private route: ActivatedRoute) {
+  constructor(private productApiService: ProductApiService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private userService: UserService) {
   }
 
   isBold: boolean;
@@ -26,16 +30,27 @@ export class AdminHomeComponent implements OnInit {
   }));
 
   ngOnInit() {
+    this.userService.isLoggedIn$.subscribe((isLoggedIn) =>{
+      if(!isLoggedIn){
+        this.router.navigateByUrl('home');
+      }
+    });
 
 
-    //
+    }
+
+    ngOnDestroy() {
+
+    }
+
+  //
     // this.productApiService.getCatalog().subscribe((catalogs) => {
     //   this.isBold = true;
     //   this.catalogList = catalogs;
     //     console.log(catalogs);
     //   }
     // )
-  }
+
 
   getIsBold() {
     return this.isBold ? 'font-extrabold' : 'font-medium';
